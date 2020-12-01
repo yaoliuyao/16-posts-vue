@@ -65,7 +65,7 @@ git commit -m 'first'
 
 推送到服务器:
 ```shell script
-git remote add origin git@github.com:yaollllllsan/myblog
+git remote add origin https://github.com/yaollllllsan/myblog
 git push -u origin master
 ```
 
