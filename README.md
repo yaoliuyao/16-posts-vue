@@ -69,7 +69,7 @@ git remote add origin https://github.com/yaollllllsan/myblog
 git push -u origin master
 ```
 
-之后，进了若干修改，就可以随时记录并上传了:
+之后进行了若干修改后，就可以随时记录并上传了:
 ```shell script
 # 记录
 git add .
