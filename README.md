@@ -1,17 +1,16 @@
-# myblog vue
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [myblog vue](#myblog-vue)
+- [My Blog (Vue)](#my-blog-vue)
     - [首先，创建项目](#首先创建项目)
-    - [创建服务端模块](#创建服务端模块)
-    - [创建客户端模块](#创建客户端模块)
-    - [上传到 Github，方便团队协作](#上传到-github方便团队协作)
+    - [其次，创建服务端模块](#其次创建服务端模块)
+    - [然后，创建客户端模块](#然后创建客户端模块)
+    - [[可选] 上传到 Github，方便团队协作](#可选-上传到-github方便团队协作)
 
 <!-- markdown-toc end -->
 
-
+# My Blog (Vue)
 ## 首先，创建项目
 
 使用 Idea，创建一个 Empty 项目
@@ -31,11 +30,11 @@
     - vue.config.json
 ```
 
-## 创建服务端模块
+## 其次，创建服务端模块
 
 勾选 Web Application
 
-## 创建客户端模块
+## 然后，创建客户端模块
 
 使用脚手架创建一个 vue 项目:
 ```shell script
@@ -55,7 +54,7 @@ npm run serve
 在 idea 中选择 create module with exists source，然后选择该文件夹
 ```
 
-## 上传到 Github，方便团队协作
+## [可选] 上传到 Github，方便团队协作
 
 首先，在 Github 上注册一个账号，并 New Repositoy (创建一个新仓库)，比如名字为 myblog。
 
