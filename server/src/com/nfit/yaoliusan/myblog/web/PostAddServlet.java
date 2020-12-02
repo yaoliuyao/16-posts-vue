@@ -25,8 +25,11 @@ public class PostAddServlet extends HttpServlet {
         Part cover = req.getPart("cover");
         try {
             // 将图片保存，并获取其路径名
-            String coverPath = "/img/" + System.currentTimeMillis() + "-" + cover.getSubmittedFileName();
-            cover.write(getServletContext().getRealPath("/") + coverPath);
+            String coverPath = "";
+            if (cover != null) {
+                coverPath = "/img/" + System.currentTimeMillis() + "-" + cover.getSubmittedFileName();
+                cover.write(getServletContext().getRealPath("/") + coverPath);
+            }
 
             // 所有信息入库
             PostDAO postDAO = new PostDAO();
