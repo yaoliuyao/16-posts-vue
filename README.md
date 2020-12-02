@@ -13,7 +13,7 @@
 # My Blog (Vue)
 ## 首先，创建项目
 
-使用 Idea，创建一个 Empty 项目
+使用 Idea，创建一个 Empty 项目。
 
 预期目录结构是:
 ```
@@ -90,3 +90,17 @@ git push
 ```
 
 另外，可以自己思考下，如何下载并更新。
+
+比如:
+```shell script
+cd xxx & git init .  # 将 xxx 文件夹转换为一个 git 项目。执行后，文件夹下面会多出一个 .git 隐藏文件夹
+git clone https://github.com/user/repo.git # 从 github 服务器，将某个仓库克隆到本地
+
+notepad xxx.md & git add . & git commit -m "修改了些啥" # 进行修改，并进行版本提交
+git push  # 将提交的 commit 推送（同步）到相应的远程仓库
+git pull    # 从相应的远程仓库进行拉取 (同步)，这就是跟新操作
+
+git status # 随时执行，可以查看当前仓库的状态
+git log      # 查看修改的日志
+git diff      # 查看修改了什么东西
+```
