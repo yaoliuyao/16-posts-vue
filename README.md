@@ -104,3 +104,10 @@ git status # 随时执行，可以查看当前仓库的状态
 git log      # 查看修改的日志
 git diff      # 查看修改了什么东西
 ```
+
+常用的修改、推送三连:
+```shell script
+git add .
+git commit -m "xxx"
+git push
+```
