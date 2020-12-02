@@ -32,7 +32,7 @@
 
 ## 其次，创建服务端模块
 
-勾选 Web Application
+注意: 勾选 Web Application!
 
 ## 然后，创建客户端模块
 
