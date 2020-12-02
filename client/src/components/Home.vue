@@ -2,13 +2,12 @@
     <div>
         <el-container>
             <el-header>
-                <el-row>
-                    <el-col :span="2">
-                        <h3>My Blog</h3>
+                <el-row align="bottom">
+                    <el-col :span="5">
+                        <h1>My Personal Blog</h1>
                     </el-col>
-                    <el-col :span="16">
-                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-                                 @select="handleSelect">
+                    <el-col :span="13">
+                        <el-menu mode="horizontal">
                             <el-submenu index="1">
                                 <template slot="title">分类</template>
                                 <el-menu-item index="2-1">哲学</el-menu-item>
@@ -28,7 +27,7 @@
             <el-main>
                 <el-row>
                     <!-- 主体内容 -->
-                    <el-col :span="16" class="main">
+                    <el-col :span="18" class="main">
                         <div class="posts">
                             <div class="post" v-for="post in posts" :key="post.id">
                                 <el-row class="post-header">
@@ -55,7 +54,7 @@
                         </div>
                     </el-col>
                     <!-- 侧边栏 -->
-                    <el-col :span="8" class="aside">
+                    <el-col :span="6" class="aside">
                         <Banner></Banner>
                     </el-col>
                 </el-row>
@@ -64,31 +63,28 @@
                 <Footer></Footer>
             </el-footer>
         </el-container>
+
         <el-dialog title="发表博客" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-                <el-row>
-                    <el-col :span="16">
+            <el-row :gutter="20">
+                <el-col :span="16">
+                    <el-form :model="form">
                         <el-form-item label="标题" :label-width="formLabelWidth">
                             <el-input v-model="form.title" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="内容" :label-width="formLabelWidth">
                             <el-input v-model="form.content" autocomplete="off"></el-input>
                         </el-form-item>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="col-md-4">
-                            <img class="preview-img" src="../assets/img/mm.jpg">
-                            <p>
-                                请点击选择图片
-                            </p>
+                        <div class="form-group" style="display: none">
+                            <input class="file-input" ref="f" type="file" name="cover" id="post-cover">
+                            <input type="hidden" v-model="form.author">
                         </div>
-                    </el-col>
-                </el-row>
-                <div class="form-group" style="display: none">
-                    <input class="file-input" type="file" name="cover" id="post-cover">
-                    <input type="hidden" v-model="form.author">
-                </div>
-            </el-form>
+                    </el-form>
+                </el-col>
+                <el-col :span="8">
+                    <img @click="doPick" class="preview-img" src="../assets/img/mm.jpg">
+                    <p> 请点击选择图片 </p>
+                </el-col>
+            </el-row>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="savePost">确 定</el-button>
@@ -114,8 +110,7 @@
                 form: {
                     author: '张三',
                     title: '',
-                    content: '',
-                    cover: ''
+                    content: ''
                 },
                 formLabelWidth: '120px'
             }
@@ -131,12 +126,13 @@
                     alert(e);
                 });
             },
-            savePost () {
+            savePost() {
                 this.dialogFormVisible = false;
                 var formData = new FormData();
                 formData.append("author", this.form.author);
                 formData.append("title", this.form.title);
                 formData.append("content", this.form.content);
+                formData.append("cover", this.$refs.f.files[0]);
 
                 axios({
                     url: '/api/post/add',
@@ -150,6 +146,9 @@
                 }).catch(e => {
                     alert(e);
                 })
+            },
+            doPick() {
+                this.$refs.f.click();
             }
         },
         created() {
