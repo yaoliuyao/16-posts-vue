@@ -111,3 +111,15 @@ git add .
 git commit -m "xxx"
 git push
 ```
+
+在安装完 git 之后，一般来说需要做一件事，配置:
+```shell script
+# 必须的配置，你的私人信息
+git config --global user.email "随便写一个邮箱名(写个假的可以，但最好是真的)"
+git config --global user.name "写你的名字(网名)"
+
+# 配置快捷方式
+git config --global alias.st status   # git status -> git st
+git config --global alias.b branch  # git branch -> git b
+git config --global alias.loga "log --pretty=oneline --stat"
+```
