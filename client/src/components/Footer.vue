@@ -18,5 +18,6 @@
         border-top: 1px solid #666;
         padding: 2em;
         margin: 0;
+        text-align: center;
     }
 </style>

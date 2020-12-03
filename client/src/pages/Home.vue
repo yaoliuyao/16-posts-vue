@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-header>
-                <el-row align="bottom">
+                <el-row align="middle" style="height: 60px" type="flex">
                     <el-col :span="5">
                         <h1>My Personal Blog</h1>
                     </el-col>
@@ -21,6 +21,7 @@
                     <el-col :span="6">
                         <el-button @click="dialogFormVisible = true">发表博客</el-button>
                         <el-button>用户管理</el-button>
+                        <el-button @click="test">测试</el-button>
                     </el-col>
                 </el-row>
             </el-header>
@@ -38,7 +39,7 @@
                                         </p>
                                     </el-col>
                                     <el-col :span="4" class="post-cover">
-                                        <img src='../assets/img/mm.jpg' class="img-thumbnail">
+                                        <img :src="'/api/' + post.cover" class="img-thumbnail">
                                     </el-col>
                                 </el-row>
                                 <el-row class="post-footer">
@@ -65,7 +66,7 @@
         </el-container>
 
         <el-dialog title="发表博客" :visible.sync="dialogFormVisible">
-            <el-row :gutter="20">
+            <el-row :gutter="60">
                 <el-col :span="16">
                     <el-form :model="form">
                         <el-form-item label="标题" :label-width="formLabelWidth">
@@ -75,27 +76,27 @@
                             <el-input v-model="form.content" autocomplete="off"></el-input>
                         </el-form-item>
                         <div class="form-group" style="display: none">
-                            <input class="file-input" ref="f" type="file" name="cover" id="post-cover">
+                            <input type="file" ref="x" @change="filePick">
                             <input type="hidden" v-model="form.author">
                         </div>
                     </el-form>
                 </el-col>
                 <el-col :span="8">
-                    <img @click="doPick" class="preview-img" src="../assets/img/mm.jpg">
+                    <img @click="$refs.x.click()" class="preview-img" :src="previewSrc">
                     <p> 请点击选择图片 </p>
                 </el-col>
             </el-row>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="savePost">确 定</el-button>
+                <el-button type="primary" @click="savePost">发 表</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-    import Footer from './Footer';
-    import Banner from './Banner';
+    import Footer from '../components/Footer';
+    import Banner from '../components/Banner';
     import axios from 'axios';
 
     export default {
@@ -107,12 +108,14 @@
             return {
                 posts: [],
                 dialogFormVisible: false,
+                formLabelWidth: '80px',
                 form: {
                     author: '张三',
                     title: '',
-                    content: ''
+                    content: '',
+                    cover: null
                 },
-                formLabelWidth: '120px'
+                previewSrc: require("../assets/img/mm.jpg")
             }
         },
         methods: {
@@ -128,27 +131,32 @@
             },
             savePost() {
                 this.dialogFormVisible = false;
+
                 var formData = new FormData();
                 formData.append("author", this.form.author);
                 formData.append("title", this.form.title);
                 formData.append("content", this.form.content);
-                formData.append("cover", this.$refs.f.files[0]);
+                formData.append("cover", this.form.cover);
 
                 axios({
                     url: '/api/post/add',
                     method: 'post',
                     data: formData
                 }).then(r => {
-                    console.log(r);
                     this.loadPosts();
-                    this.form = {};
-                    this.form.author = '张三';
+
+                    this.$refs.x.value = '';
+                    this.form = { author: '张三' };
                 }).catch(e => {
                     alert(e);
                 })
             },
-            doPick() {
-                this.$refs.f.click();
+            filePick() {
+                this.previewSrc = URL.createObjectURL(this.$refs.x.files[0]);
+                this.form.cover = this.$refs.x.files[0];
+            },
+            test () {
+                alert(this.$refs.x)
             }
         },
         created() {

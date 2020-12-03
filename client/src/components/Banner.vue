@@ -16,8 +16,9 @@
 </script>
 
 <style scoped>
-    .hot-tags {
+    .hot-tags, .hot-posts {
         height: 300px;
         border: 1px solid blue;
+        padding: 2em;
     }
 </style>
