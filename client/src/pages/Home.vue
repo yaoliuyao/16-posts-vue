@@ -33,7 +33,9 @@
                             <div class="post" v-for="post in posts" :key="post.id">
                                 <el-row class="post-header">
                                     <el-col :span="20" class="post-content">
-                                        <h3 @click="$parent.currentComp = 'Post'">{{post.title}}</h3>
+                                        <router-link :to="'/post/' + post.id">
+                                            <h3>{{post.title}}</h3>
+                                        </router-link>
                                         <p>
                                             {{post.content}}
                                         </p>

@@ -2,9 +2,9 @@
     <div>
         <el-container>
             <el-header>
-                <div @click="$parent.currentComp = 'Home'">
+                <h1 @click="$router.push('/home')">
                     头部
-                </div>
+                </h1>
             </el-header>
             <el-main>
                 <el-row>
@@ -34,6 +34,9 @@
         name: "Post",
         components: {
             Footer, Banner
+        },
+        mounted() {
+            alert(this.$route.params["id"]);
         }
     }
 </script>
