@@ -35,8 +35,8 @@
         components: {
             Footer, Banner
         },
-        mounted() {
-            alert(this.$route.params["id"]);
+        created() {
+            console.log(this.$route.params["id"]);
         }
     }
 </script>

@@ -1,11 +1,5 @@
 <template>
   <div id="app">
-    <div>
-      <router-link to="/home">主页</router-link>
-      <router-link to="/post">详情</router-link>
-    </div>
-    <hr>
-
     <!-- 路由出口 -->
     <router-view></router-view>
   </div>
@@ -13,12 +7,7 @@
 
 <script>
 export default {
-  name: 'app',
-  data() {
-    return {
-      currentComp: "Home"
-    }
-  }
+  name: 'app'
 }
 </script>
 

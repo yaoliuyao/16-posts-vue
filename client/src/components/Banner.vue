@@ -16,9 +16,14 @@
 </script>
 
 <style scoped>
+    .banner {
+        padding: 1em;
+    }
     .hot-tags, .hot-posts {
-        height: 300px;
-        border: 1px solid blue;
-        padding: 2em;
+        height: 200px;
+        padding: 1em;
+        margin: 1em 0;
+        box-shadow: 0 0 2px #666;
+        border-radius: 5px;
     }
 </style>
