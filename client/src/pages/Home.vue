@@ -32,10 +32,8 @@
                         <h1 class="post-title"
                             @click="$router.push('/post/' + post.id)">{{post.title}}</h1>
                         <el-row :gutter="40">
-                            <el-col :span="18">
-                                <p class="post-content">
-                                    {{post.content}}
-                                </p>
+                            <el-col :span="18" class="post-content">
+                                {{post.content}}
                             </el-col>
                             <el-col :span="6" class="post-cover">
                                 <el-image
@@ -189,11 +187,19 @@
         padding: 1em;
     }
 
+    .post-title {
+        cursor: pointer;
+    }
+
+    .post-content {
+
+    }
+
     .post-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 2em;
+        margin-top: 1em;
     }
 
     .img-thumbnail {
