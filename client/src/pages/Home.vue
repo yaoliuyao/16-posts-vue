@@ -55,7 +55,6 @@
                     <hr>
                 </div>
             </el-main>
-
             <!-- 侧边栏 -->
             <el-aside width="350px" style="margin-left: 30px">
                 <Banner></Banner>
@@ -73,7 +72,14 @@
                             <el-input v-model="form.title" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="内容" :label-width="formLabelWidth">
-                            <el-input v-model="form.content" autocomplete="off"></el-input>
+                            <el-input
+                                    type="textarea"
+                                    placeholder="请输入内容"
+                                    v-model="form.content"
+                                    maxlength="1000"
+                                    utocomplete="off"
+                                    show-word-limit>
+                            </el-input>
                         </el-form-item>
                         <div class="form-group" style="display: none">
                             <input type="file" ref="x" @change="filePick">
@@ -147,6 +153,8 @@
 
                     this.$refs.x.value = '';
                     this.form = {author: '张三'};
+
+                    this.$message("保存成功！");
                 }).catch(e => {
                     alert(e);
                 })
@@ -191,10 +199,6 @@
         cursor: pointer;
     }
 
-    .post-content {
-
-    }
-
     .post-footer {
         display: flex;
         justify-content: space-between;
@@ -205,5 +209,10 @@
     .img-thumbnail {
         height: 150px;
         width: 150px;
+    }
+
+    .preview-img {
+        width: 100px;
+        height: auto;
     }
 </style>
