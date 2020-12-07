@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class=".top">
         <el-header>
             <el-row align="middle" style="height: 60px" type="flex">
                 <el-col :span="6">
@@ -37,7 +37,7 @@
                             </el-col>
                             <el-col :span="6" class="post-cover">
                                 <el-image
-                                        :src="'/api/' + post.cover"
+                                        :src="'/myblog/' + post.cover"
                                         fit="contain"
                                         class="img-thumbnail"/>
                             </el-col>
@@ -127,7 +127,7 @@
         methods: {
             loadPosts() {
                 axios({
-                    url: "/api/posts"
+                    url: "/myblog/posts"
                 }).then(r => {
                     console.log(r)
                     this.posts = r.data.data;
@@ -145,7 +145,7 @@
                 formData.append("cover", this.form.cover);
 
                 axios({
-                    url: '/api/post/add',
+                    url: '/myblog/post/add',
                     method: 'post',
                     data: formData
                 }).then(r => {
@@ -187,7 +187,7 @@
     }
 
     .el-main {
-        margin: 0 2em;
+        margin: 0 1em;
     }
 
     .post {

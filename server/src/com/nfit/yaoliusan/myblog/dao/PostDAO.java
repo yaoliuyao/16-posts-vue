@@ -39,7 +39,7 @@ public class PostDAO {
      */
     public Post getPostById(int id) throws Exception {
         Connection conn = DBHelper.getConnection();
-        String sql = "select id, title, content, author, likes, created from post where id = ?";
+        String sql = "select id, title, content, cover, author, likes, created from post where id = ?";
         try {
             return new QueryRunner().query(
                      conn, sql, new BeanHandler<Post>(Post.class), id);

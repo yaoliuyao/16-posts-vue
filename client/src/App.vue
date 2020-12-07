@@ -2,19 +2,9 @@
   <div id="app">
     <!-- 路由出口 -->
     <router-view></router-view>
-    <el-backtop target=".page-component__scroll .el-scrollbar__wrap" :bottom="100">
-      <div style="{
-        height: 100%;
-        width: 100%;
-        background-color: #f2f5f6;
-        box-shadow: 0 0 6px rgba(0,0,0, .12);
-        text-align: center;
-        line-height: 40px;
-        color: #1989fa;
-      }"
-      >
-        UP
-      </div>
+    <!-- 滚动到头部 -->
+    <el-backtop :visibility-height="60">
+      <i class="el-icon-top"></i>
     </el-backtop>
   </div>
 </template>
@@ -31,5 +21,12 @@ export default {
   body {
     margin: 0;
     padding: 0;
+  }
+  .el-backtop {
+    background: darkgreen;
+  }
+  .el-icon-top:before {
+    color: white;
+    font-weight: bolder;
   }
 </style>
