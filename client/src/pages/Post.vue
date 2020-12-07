@@ -21,22 +21,26 @@
                         <p class="post-author">{{post.author}}</p>
                         <p class="post-time">发布于 <i>{{post.created}}</i></p>
                         <div>
-                            <span class="post-like">点赞 (<i>{{post.likes}}</i>) </span>
-                            <span class="post-comment">评论 (<i>17</i>) </span>
-                            <span class="post-share">分享 (<i>20</i>) </span>
+                            <span class="post-like" @click="likePost">
+                                <i :class="likeIt"></i>
+                                (<i>{{post.likes}}</i>) </span>
+                            <span class="post-share">
+                                <i class="el-icon-share"></i>
+                                (<i>20</i>)
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="comment-form">
                     <h3>进行评论</h3>
                     <el-input
-                            v-model="commenter"
+                            v-model="comment.author"
                             placeholder="请输入您的名字"
                             autocomplete="off"/>
                     <el-input
                             type="textarea"
                             placeholder="请输入您的评论"
-                            v-model="comment"
+                            v-model="comment.content"
                             maxlength="1000"
                             autocomplete="off"
                             show-word-limit/>
@@ -66,7 +70,7 @@
                             {{comment.content}}
                         </p>
                         <footer>
-                            回复 点赞 删除
+                            回复 点赞 <span @click="deleteComment(comment.id)">删除</span>
                         </footer>
                     </div>
                 </div>
@@ -93,11 +97,15 @@
         },
         data() {
             return {
-                postId: null,
-                post: [],
-                comment: "",
-                commenter: "",
-                comments: []
+                post: {
+                    id: null
+                },
+                comment: {
+                    author: "",
+                    content: ""
+                },
+                comments: [],
+                likeIt: 'el-icon-star-off'
             }
         },
         methods: {
@@ -119,16 +127,31 @@
                     this.$alert(e);
                 });
             },
+            likePost() {
+                if (this.likeIt === 'el-icon-star-off') {
+                    axios({
+                        url: "/myblog/post/like?id=" + this.post.id
+                    }).then(_ => {
+                        this.likeIt = 'el-icon-star-on';
+                        this.loadPost(this.post.id);
+                    }).catch(e => {
+                        this.$alert(e);
+                    });
+                } else {
+                    this.$message("不能重复点赞");
+                }
+
+            },
             saveComment() {
-                if (!this.commenter || !this.comment) {
+                if (!this.comment.author || !this.comment.content) {
                     this.$alert("你这是搞啥？");
                     return;
                 }
 
                 let data = new URLSearchParams();
-                data.append("postid", this.postId);
-                data.append("author", this.commenter);
-                data.append("content", this.comment);
+                data.append("postid", this.post.id);
+                data.append("author", this.comment.author);
+                data.append("content", this.comment.content);
 
                 axios({
                     method: "post",
@@ -136,18 +159,30 @@
                     data: data
                 }).then(r => {
                     this.$message("评论发表成功！");
-                    this.loadComments(this.postId);
-                    this.commenter = "";
-                    this.comment = "";
+                    this.loadComments(this.post.id);
+                    this.comment = {};
                 }).catch(e => {
                     this.$alert(e);
                 });
+            },
+            deleteComment(id) {
+                this.$confirm("确定要删除?")
+                    .then(() => {
+                        axios({
+                            url: '/myblog/comment/del?id=' + id
+                        }).then(r => {
+                            this.$message("删除成功!")
+                            this.loadComments(this.post.id)
+                        }).catch(e => {
+                            this.$alert(e);
+                        });
+                    });
             }
         },
         created() {
-            this.postId = this.$route.params["id"];
-            this.loadPost(this.postId);
-            this.loadComments(this.postId);
+            this.post.id = this.$route.params["id"];
+            this.loadPost(this.post.id);
+            this.loadComments(this.post.id);
         }
     }
 
@@ -155,6 +190,10 @@
 </script>
 
 <style scoped>
+    i {
+        font-style: normal;
+    }
+
     .el-footer {
         padding: 0;
     }
@@ -169,6 +208,18 @@
 
     .comment {
         margin-bottom: 2em;
+    }
+
+    .post-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: 2em;
+    }
+
+    .post-like {
+        cursor: pointer;
+        margin-right: 8px;
     }
 
     .comment-head {
