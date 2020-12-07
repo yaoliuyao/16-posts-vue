@@ -186,6 +186,11 @@
     .comment-form, .comment-list {
         margin-top: 2em;
     }
+
+    .img-thumbnail {
+        height: 150px;
+        width: 150px;
+    }
 </style>
 
 <style>
