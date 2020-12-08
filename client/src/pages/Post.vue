@@ -88,7 +88,6 @@
 <script>
     import Footer from '../components/Footer';
     import Banner from '../components/Banner';
-    import axios from 'axios';
 
     export default {
         name: "Post",
@@ -110,32 +109,26 @@
         },
         methods: {
             loadPost(id) {
-                axios({
+                this.$axios({
                     url: "/myblog/post?id=" + id
                 }).then(r => {
                     this.post = r.data.data;
-                }).catch(e => {
-                    this.$alert(e);
                 });
             },
             loadComments(postid) {
-                axios({
+                this.$axios({
                     url: "/myblog/comments?postid=" + postid
                 }).then(r => {
                     this.comments = r.data.data;
-                }).catch(e => {
-                    this.$alert(e);
                 });
             },
             likePost() {
                 if (this.likeIt === 'el-icon-star-off') {
-                    axios({
+                    this.$axios({
                         url: "/myblog/post/like?id=" + this.post.id
                     }).then(_ => {
                         this.likeIt = 'el-icon-star-on';
                         this.loadPost(this.post.id);
-                    }).catch(e => {
-                        this.$alert(e);
                     });
                 } else {
                     this.$message("不能重复点赞");
@@ -153,7 +146,7 @@
                 data.append("author", this.comment.author);
                 data.append("content", this.comment.content);
 
-                axios({
+                this.$axios({
                     method: "post",
                     url: "/myblog/comment/add",
                     data: data
@@ -161,20 +154,16 @@
                     this.$message("评论发表成功！");
                     this.loadComments(this.post.id);
                     this.comment = {};
-                }).catch(e => {
-                    this.$alert(e);
                 });
             },
             deleteComment(id) {
                 this.$confirm("确定要删除?")
                     .then(() => {
-                        axios({
+                        this.$axios({
                             url: '/myblog/comment/del?id=' + id
                         }).then(r => {
                             this.$message("删除成功!")
                             this.loadComments(this.post.id)
-                        }).catch(e => {
-                            this.$alert(e);
                         });
                     });
             }

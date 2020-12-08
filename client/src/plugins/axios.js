@@ -2,27 +2,31 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import { Message, Loading } from "element-ui";
 
 // Full config:  https://github.com/axios/axios#request-config
-// axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
+// axios.defaults.baseURL = '/myblog';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  // timeout: 60 * 1000, // Timeout
+  timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);
 
+let loading;
+
 _axios.interceptors.request.use(
   function(config) {
-    // Do something before request is sent
+    loading = Loading.service({ fullscreen: true });
     return config;
   },
   function(error) {
-    // Do something with request error
+    loading.close();
+    Message.error("请求中: " + error);
     return Promise.reject(error);
   }
 );
@@ -30,12 +34,13 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
-    // Do something with response data
+    loading.close();
     return response;
   },
   function(error) {
-    // Do something with response error
-    return Promise.reject(error);
+    loading.close();
+    Message.info(error);
+    return Promise.reject(error); // 如果 axios 的调用处存在 .catch，那么就去调用它
   }
 );
 

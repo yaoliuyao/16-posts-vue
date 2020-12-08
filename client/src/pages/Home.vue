@@ -103,7 +103,7 @@
 <script>
     import Footer from '../components/Footer';
     import Banner from '../components/Banner';
-    import axios from 'axios';
+    import { Loading } from 'element-ui';
 
     export default {
         name: "Home",
@@ -126,13 +126,10 @@
         },
         methods: {
             loadPosts() {
-                axios({
+                this.$axios({
                     url: "/myblog/posts"
                 }).then(r => {
-                    console.log(r)
                     this.posts = r.data.data;
-                }).catch(e => {
-                    alert(e);
                 });
             },
             savePost() {
@@ -144,7 +141,7 @@
                 formData.append("content", this.form.content);
                 formData.append("cover", this.form.cover);
 
-                axios({
+                this.$axios({
                     url: '/myblog/post/add',
                     method: 'post',
                     data: formData
@@ -155,9 +152,7 @@
                     this.form = {author: '张三'};
 
                     this.$message("保存成功！");
-                }).catch(e => {
-                    alert(e);
-                })
+                });
             },
             filePick() {
                 this.previewSrc = URL.createObjectURL(this.$refs.x.files[0]);
