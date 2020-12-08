@@ -3,10 +3,15 @@ package com.nfit.yaoliusan.myblog.vo;
 
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ResultVO {
     private int code = 1;
     private String message;
     private Object data;
+
+    private Map<String, Object> page = new HashMap<>();
 
     private ResultVO() {}
 
@@ -52,4 +57,14 @@ public class ResultVO {
         this.data = data;
     }
 
+    public Map<String, Object> getPage() {
+        return page;
+    }
+
+    public ResultVO setPage(int currentPage, int pageSize, int total) {
+        this.page.put("current", currentPage);
+        this.page.put("size", pageSize);
+        this.page.put("total", total);
+        return this;
+    }
 }

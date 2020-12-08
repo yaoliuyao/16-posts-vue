@@ -54,6 +54,14 @@
                     </div>
                     <hr>
                 </div>
+                <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        @current-change="handlePageChange"
+                        :current-page="page.current"
+                        :page-size="page.size"
+                        :total="page.total">
+                </el-pagination>
             </el-main>
             <!-- 侧边栏 -->
             <el-aside width="350px" style="margin-left: 30px">
@@ -111,6 +119,11 @@
         },
         data() {
             return {
+                page: {
+                    current: 1,
+                    size: 10,
+                    total: 0
+                },
                 posts: [],
                 dialogFormVisible: false,
                 formLabelWidth: '80px',
@@ -126,9 +139,14 @@
         methods: {
             loadPosts() {
                 this.$axios({
-                    url: "/posts"
+                    url: "/posts",
+                    params: {
+                        curr: this.page.current,
+                        size: this.page.size
+                    }
                 }).then(r => {
                     this.posts = r.data.data;
+                    this.page.total = r.data.page.total;
                 });
             },
             savePost() {
@@ -156,6 +174,10 @@
             filePick() {
                 this.previewSrc = URL.createObjectURL(this.$refs.x.files[0]);
                 this.form.cover = this.$refs.x.files[0];
+            },
+            handlePageChange(v) {
+                this.page.current = v;
+                this.loadPosts();
             },
             test() {
                 alert(this.$refs.x)

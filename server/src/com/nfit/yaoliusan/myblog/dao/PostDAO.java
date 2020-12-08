@@ -31,6 +31,31 @@ public class PostDAO {
         }
     }
 
+    public List<Post> getPostsByPage(int currentPage, int limit) throws Exception {
+        Connection conn = DBHelper.getConnection();
+        String sql = "select * from " +
+                "(select row_number() over (order by created desc) as rn, id, title, content, author, cover, created from post) as s " +
+                "where rn between ? and ?";
+        try {
+            return new QueryRunner().query(
+                    conn, sql, new BeanListHandler<Post>(Post.class),
+                    (currentPage - 1) * limit + 1,
+                    currentPage * limit);
+        } finally {
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
+    public int getPostsMount() throws Exception {
+        Connection conn = DBHelper.getConnection();
+        try {
+            String sql = "select count(*) from post";
+            return (int) new QueryRunner().query(conn, sql, new ScalarHandler<>());
+        } finally {
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
     /**
      * 根据 PostId 获取文章
      *
@@ -91,5 +116,10 @@ public class PostDAO {
         } finally {
             DbUtils.closeQuietly(conn);
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        PostDAO postDAO = new PostDAO();
+        System.out.println(postDAO.getPostsMount());
     }
 }
