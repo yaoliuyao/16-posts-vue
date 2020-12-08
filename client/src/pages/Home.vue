@@ -145,8 +145,9 @@
                         size: this.page.size
                     }
                 }).then(r => {
-                    this.posts = r.data.data;
                     this.page.total = r.data.page.total;
+                    this.posts = r.data.data;
+                    window.scrollTo(0, 0); // 滚动到顶部啊
                 });
             },
             savePost() {
@@ -230,5 +231,10 @@
     .preview-img {
         width: 100px;
         height: auto;
+    }
+
+    .el-pagination {
+        text-align: center;
+        margin-top: 2em;
     }
 </style>
