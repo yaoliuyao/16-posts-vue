@@ -5,7 +5,7 @@ import axios from "axios";
 import { Message, Loading } from "element-ui";
 
 // Full config:  https://github.com/axios/axios#request-config
-// axios.defaults.baseURL = '/myblog';
+axios.defaults.baseURL = '/myblog';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 

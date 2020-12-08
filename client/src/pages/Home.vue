@@ -103,7 +103,6 @@
 <script>
     import Footer from '../components/Footer';
     import Banner from '../components/Banner';
-    import { Loading } from 'element-ui';
 
     export default {
         name: "Home",
@@ -127,7 +126,7 @@
         methods: {
             loadPosts() {
                 this.$axios({
-                    url: "/myblog/posts"
+                    url: "/posts"
                 }).then(r => {
                     this.posts = r.data.data;
                 });
@@ -135,14 +134,14 @@
             savePost() {
                 this.dialogFormVisible = false;
 
-                var formData = new FormData();
+                let formData = new FormData();
                 formData.append("author", this.form.author);
                 formData.append("title", this.form.title);
                 formData.append("content", this.form.content);
                 formData.append("cover", this.form.cover);
 
                 this.$axios({
-                    url: '/myblog/post/add',
+                    url: '/post/add',
                     method: 'post',
                     data: formData
                 }).then(r => {

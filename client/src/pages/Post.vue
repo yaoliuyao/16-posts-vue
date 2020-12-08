@@ -110,14 +110,14 @@
         methods: {
             loadPost(id) {
                 this.$axios({
-                    url: "/myblog/post?id=" + id
+                    url: "/post?id=" + id
                 }).then(r => {
                     this.post = r.data.data;
                 });
             },
             loadComments(postid) {
                 this.$axios({
-                    url: "/myblog/comments?postid=" + postid
+                    url: "/comments?postid=" + postid
                 }).then(r => {
                     this.comments = r.data.data;
                 });
@@ -125,7 +125,7 @@
             likePost() {
                 if (this.likeIt === 'el-icon-star-off') {
                     this.$axios({
-                        url: "/myblog/post/like?id=" + this.post.id
+                        url: "/post/like?id=" + this.post.id
                     }).then(_ => {
                         this.likeIt = 'el-icon-star-on';
                         this.loadPost(this.post.id);
@@ -148,7 +148,7 @@
 
                 this.$axios({
                     method: "post",
-                    url: "/myblog/comment/add",
+                    url: "/comment/add",
                     data: data
                 }).then(r => {
                     this.$message("评论发表成功！");
@@ -160,7 +160,7 @@
                 this.$confirm("确定要删除?")
                     .then(() => {
                         this.$axios({
-                            url: '/myblog/comment/del?id=' + id
+                            url: '/comment/del?id=' + id
                         }).then(r => {
                             this.$message("删除成功!")
                             this.loadComments(this.post.id)
