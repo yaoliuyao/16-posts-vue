@@ -29,6 +29,22 @@ public class CommentDAO {
         }
     }
 
+    public List<Comment> getCommentsByPostIdByPage(int id, int currentPage, int limit) throws Exception {
+        Connection conn = DBHelper.getConnection();
+        String sql = "select * from " +
+                "(select row_number() over (order by created desc) as rn, id, content, author, created from comment where postid = '" + id + "') as s " +
+                "where rn between ? and ?";
+        System.out.println(sql + "   > " + currentPage);
+        try {
+            return new QueryRunner().query(
+                    conn, sql, new BeanListHandler<Comment>(Comment.class),
+                    (currentPage - 1) * limit + 1,
+                    currentPage * limit);
+        } finally {
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
     /**
      * 添加评论
      *
@@ -63,5 +79,10 @@ public class CommentDAO {
         } finally {
             DbUtils.closeQuietly(conn);
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        CommentDAO commentDAO = new CommentDAO();
+        System.out.println(commentDAO.getCommentsByPostIdByPage(57, 1, 3));
     }
 }

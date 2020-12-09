@@ -18,10 +18,25 @@ import java.util.List;
 public class CommentListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int postid = Integer.parseInt(req.getParameter("postid"));
         try {
+            int currentPage, pageSize;
+
+            try {
+                currentPage = Integer.parseInt(req.getParameter("curr"));
+            } catch (Exception e) {
+                currentPage = 1;
+            }
+
+            try {
+                pageSize = Integer.parseInt(req.getParameter("size"));
+            } catch (Exception e) {
+                pageSize = 10;
+            }
+
+            int postid = Integer.parseInt(req.getParameter("postid"));
+
             CommentDAO commentDAO = new CommentDAO();
-            List<Comment> comments = commentDAO.getCommentsByPostId(postid);
+            List<Comment> comments = commentDAO.getCommentsByPostIdByPage(postid, currentPage, pageSize);
             PrintWriter writer = resp.getWriter();
             writer.print(ResultVO.ok(comments).toJSON());
         } catch (Exception e) {

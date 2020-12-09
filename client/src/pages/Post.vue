@@ -49,10 +49,9 @@
                         <el-button @click="saveComment"><i class="el-icon-s-promotion"/></el-button>
                     </div>
                 </div>
-                <div class="comment-list">
+                <div class="comment-list" v-infinite-scroll="loadCommentsByPage">
                     <h3>评论列表</h3>
-                    <div v-if="this.comments.length === 0">暂无评论</div>
-                    <div v-else class="comment" v-for="(comment, index) in comments" :key="comment.id">
+                    <div class="comment" v-for="(comment, index) in comments" :key="comment.id">
                         <el-row>
                             <el-col :span="2">
                                 <el-image
@@ -96,6 +95,10 @@
         },
         data() {
             return {
+                page: {
+                    current: 1,
+                    size: 3
+                },
                 post: {
                     id: null
                 },
@@ -115,12 +118,25 @@
                     this.post = r.data.data;
                 });
             },
-            loadComments(postid) {
+            loadCommentsByPage() {
+                this.$message("loading " + this.page.current + " page");
+
                 this.$axios({
-                    url: "/comments?postid=" + postid
+                    url: "/comments",
+                    params: {
+                        curr: this.page.current,
+                        size: this.page.size,
+                        postid: this.post.id
+                    }
                 }).then(r => {
-                    this.comments = r.data.data;
+                    this.page.current++;
+                    this.comments = this.comments.concat(r.data.data);
                 });
+            },
+            reloadComments() {
+                this.page.current = 1;
+                this.comments = [];
+                this.loadCommentsByPage();
             },
             likePost() {
                 if (this.likeIt === 'el-icon-star-off') {
@@ -152,8 +168,7 @@
                     data: data
                 }).then(r => {
                     this.$message("评论发表成功！");
-                    this.loadComments(this.post.id);
-                    this.comment = {};
+                    this.reloadComments();
                 });
             },
             deleteComment(id) {
@@ -162,8 +177,8 @@
                         this.$axios({
                             url: '/comment/del?id=' + id
                         }).then(r => {
-                            this.$message("删除成功!")
-                            this.loadComments(this.post.id)
+                            this.$message("删除成功!");
+                            this.reloadComments();
                         });
                     });
             }
@@ -171,10 +186,8 @@
         created() {
             this.post.id = this.$route.params["id"];
             this.loadPost(this.post.id);
-            this.loadComments(this.post.id);
         }
     }
-
 
 </script>
 
@@ -193,6 +206,11 @@
 
     .el-main {
         margin: 0 1em;
+    }
+
+    .comment-list {
+        overflow-y: auto;
+        height: 300px;
     }
 
     .comment {
@@ -231,6 +249,10 @@
         height: 150px;
         width: 150px;
     }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
 </style>
 
 <style>
@@ -238,6 +260,7 @@
         background: black;
         padding: 1em;
     }
+
     .el-page-header > div {
         color: white;
     }
