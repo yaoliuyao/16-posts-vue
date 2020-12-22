@@ -185,6 +185,7 @@
             }
         },
         created() {
+            this.$myalert("创建结束")
             this.loadPosts();
         }
     }
